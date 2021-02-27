@@ -43,41 +43,32 @@ if __name__ == '__main__':
     print(Gameboard)
     simulations = 1000
     count = 0
-    births = 0
-    deathByIsolation = 0
-    deathByOvercrowding = 0
-    survival = 0
     while count < simulations:
         nextboard = np.zeros((boardSize, boardSize))
 
         for i in range(len(Gameboard) - 1):
             for j in range(len(Gameboard) - 1):
                 neighbours = np.sum(surroundingState((i, j),Gameboard))
+
                 # Birth rule
-
                 if neighbours == 3 and Gameboard[i, j] == 0:
-                    births = births + 1
                     nextboard[i, j] = 1
-                # Death by isolation
 
+                # Death by isolation
                 elif neighbours <= 2 and Gameboard[i, j] == 1:
-                    deathByIsolation = deathByIsolation + 1
                     nextboard[i, j] = 0
+
                 # Death by overcrowding
                 elif neighbours >= 5 and Gameboard[i,j] == 1:
-                    deathByOvercrowding = deathByOvercrowding + 1
                     nextboard[i, j] = 0
+
                 # Survival
                 elif (neighbours == 3 or neighbours == 4) and Gameboard[i, j] == 1:
-                    checkMe = np.sum(neighbours == 1)
-                    survival = survival + 1
                     nextboard[i, j] = 1
-        print(births, deathByIsolation, deathByOvercrowding, survival)
 
         Gameboard = nextboard
         print(Gameboard)
         print()
         count = count + 1
-        breakpoint = 1
 
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
