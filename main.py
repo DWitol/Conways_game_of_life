@@ -35,7 +35,6 @@ def surroundingState(n, x, d=1):
     return value
 
 
-# Press the green button in the gutter to run the script.
 if __name__ == '__main__':
     Gameboard = np.zeros((boardSize, boardSize))
     Gameboard = initialGameState(Gameboard)
@@ -69,5 +68,3 @@ if __name__ == '__main__':
         print(Gameboard)
         print()
         count = count + 1
-
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
