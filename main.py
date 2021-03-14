@@ -36,6 +36,7 @@ def surroundingState(n, x, d=1):
 
 
 if __name__ == '__main__':
+    #TODO implement visual board
     Gameboard = np.zeros((boardSize, boardSize))
     Gameboard = initialGameState(Gameboard)
     print(Gameboard)
