@@ -4,12 +4,28 @@
 boardSize = 20
 import numpy as np
 from future.moves import tkinter as tk
-import pygame as pg
+import pygame
+from pygame.locals import *
+true = True
+false = False
+BLACK = (0,0,0)
+WHITE = (255,255,255)
+pygame.init()
+screen = pygame.display.set_mode((640,240))
+screen.fill((0,0,0))
+x = 0
+y = 0
+cell = Rect()
+while x < 10:
+    while y < 10:
+        pygame.draw.rect(screen, WHITE, (20 + x*22, 20 + y*22, 20 , 20))
+        y += 1
+    x += 1
 
-
-
+pygame.display.update()
 
 def initialGameState(Gameboard ):
+
     Gameboard[0][2] = 1
     Gameboard[1][3] = 1
     Gameboard[2][1] = 1
@@ -43,9 +59,13 @@ if __name__ == '__main__':
     Gameboard = np.zeros((boardSize, boardSize))
     Gameboard = initialGameState(Gameboard)
     print(Gameboard)
-    simulations = 1000
-    count = 0
-    while count < simulations:
+    running = true
+    while running:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT: running = false
+    # TODO you are here in programming based on https://pygame.readthedocs.io/en/latest/1_intro/intro.html
+    #Keep following the tutorial to implement a visual board. Game is currently not functioning probably
+
         nextboard = np.zeros((boardSize, boardSize))
 
         for i in range(len(Gameboard) - 1):
@@ -71,4 +91,4 @@ if __name__ == '__main__':
         Gameboard = nextboard
         print(Gameboard)
         print()
-        count = count + 1
+
