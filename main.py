@@ -6,23 +6,16 @@ import numpy as np
 from future.moves import tkinter as tk
 import pygame
 from pygame.locals import *
+import time
+
 true = True
 false = False
 BLACK = (0,0,0)
 WHITE = (255,255,255)
-pygame.init()
-screen = pygame.display.set_mode((640,240))
-screen.fill((0,0,0))
-x = 0
-y = 0
-cell = Rect()
-while x < 10:
-    while y < 10:
-        pygame.draw.rect(screen, WHITE, (20 + x*22, 20 + y*22, 20 , 20))
-        y += 1
-    x += 1
 
-pygame.display.update()
+
+
+
 
 def initialGameState(Gameboard ):
 
@@ -59,8 +52,31 @@ if __name__ == '__main__':
     Gameboard = np.zeros((boardSize, boardSize))
     Gameboard = initialGameState(Gameboard)
     print(Gameboard)
+    pygame.init()
+    screen = pygame.display.set_mode((640, 240 * 2))
+    screen.fill((0, 0, 0))
+    x = 0
+    # cell = Rect()
+
+
     running = true
     while running:
+        start = time.time()
+        x = 0
+        # cell = Rect()
+
+        while x < boardSize:
+            y = 0
+            while y < boardSize:
+                cellColour = Gameboard[x][y]
+                if cellColour > 0:
+                    cellColour = WHITE
+                else:
+                    cellColour = BLACK
+                pygame.draw.rect(screen, cellColour, (20 + x * 22, 20 + y * 22, 20, 20))
+                y += 1
+            x += 1
+        pygame.display.update()
         for event in pygame.event.get():
             if event.type == pygame.QUIT: running = false
     # TODO you are here in programming based on https://pygame.readthedocs.io/en/latest/1_intro/intro.html
@@ -91,4 +107,5 @@ if __name__ == '__main__':
         Gameboard = nextboard
         print(Gameboard)
         print()
+        time.sleep(max(0.4 - (time.time() - start), 0))
 
