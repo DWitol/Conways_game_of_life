@@ -10,8 +10,8 @@ import time
 
 true = True
 false = False
-BLACK = (0,0,0)
-WHITE = (255,255,255)
+Live = (50,50,50)
+Dead = (255,255,255)
 
 
 
@@ -48,12 +48,14 @@ def surroundingState(n, x, d=1):
 
 
 if __name__ == '__main__':
-    #TODO implement visual board
+#todo add click to add cell functionality
+#todo add pause button
     Gameboard = np.zeros((boardSize, boardSize))
     Gameboard = initialGameState(Gameboard)
     print(Gameboard)
     pygame.init()
     screen = pygame.display.set_mode((640, 240 * 2))
+    pygame.draw.rect(screen,(255,255,0),[500,520,500,520])
     screen.fill((0, 0, 0))
     x = 0
     # cell = Rect()
@@ -70,17 +72,16 @@ if __name__ == '__main__':
             while y < boardSize:
                 cellColour = Gameboard[x][y]
                 if cellColour > 0:
-                    cellColour = WHITE
+                    cellColour = Dead
                 else:
-                    cellColour = BLACK
-                pygame.draw.rect(screen, cellColour, (20 + x * 22, 20 + y * 22, 20, 20))
+                    cellColour = Live
+                pygame.draw.rect(screen, cellColour, (20 + x * 22, 20 + y * 22, 20, 20),border_radius=1)
                 y += 1
             x += 1
         pygame.display.update()
         for event in pygame.event.get():
             if event.type == pygame.QUIT: running = false
-    # TODO you are here in programming based on https://pygame.readthedocs.io/en/latest/1_intro/intro.html
-    #Keep following the tutorial to implement a visual board. Game is currently not functioning probably
+
 
         nextboard = np.zeros((boardSize, boardSize))
 
@@ -105,7 +106,8 @@ if __name__ == '__main__':
                     nextboard[i, j] = 1
 
         Gameboard = nextboard
-        print(Gameboard)
+        print(pygame.event.get())
+      #  print(Gameboard)
         print()
         time.sleep(max(0.4 - (time.time() - start), 0))
 
