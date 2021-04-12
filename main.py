@@ -84,14 +84,20 @@ def updateScreen(Gameboard):
 
 if __name__ == '__main__':
     # todo add click to add cell functionality
-    # todo add pause button
     Gameboard = np.zeros((boardSize, boardSize))
     Gameboard = initialGameState(Gameboard)
     print(Gameboard)
     pygame.init()
     screen = pygame.display.set_mode((640, 240 * 2))
-    pygame.draw.rect(screen, (255, 255, 0), [500, 520, 500, 520])
     screen.fill((0, 0, 0))
+    # todo add pause button
+    pygame.draw.rect(screen, (255, 255, 0), [500, 20, 100, 40])
+    font = pygame.font.SysFont(None, 24)
+    BLUE = (0,0,255)
+    img = font.render('Pause', True, BLUE)
+    screen.blit(img, (510, 20))
+
+
     x = 0
     # cell = Rect()
     updateScreen(Gameboard)
