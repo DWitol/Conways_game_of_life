@@ -90,8 +90,7 @@ if __name__ == '__main__':
     pygame.init()
     screen = pygame.display.set_mode((640, 240 * 2))
     screen.fill((0, 0, 0))
-    # todo add pause button
-    pygame.draw.rect(screen, (255, 255, 0), [500, 20, 100, 40])
+    pauseButton = pygame.draw.rect(screen, (255, 255, 0), [500, 20, 100, 40])
     font = pygame.font.SysFont(None, 24)
     BLUE = (0,0,255)
     img = font.render('Pause', True, BLUE)
@@ -103,13 +102,16 @@ if __name__ == '__main__':
     updateScreen(Gameboard)
     lastFrameUpdate = time.time()
     running = true
+    pauseUpdate = False
     while running:
         start = time.time()
-        if time.time() - lastFrameUpdate >= 0.4:
+        if time.time() - lastFrameUpdate >= 0.4 and not pauseUpdate:
             Gameboard = updateScreen(Gameboard)
             lastFrameUpdate = time.time()
         for event in pygame.event.get():
             if event.type == pygame.QUIT: running = false
+            if event.type == pygame.MOUSEBUTTONUP:
+                pos = pygame.mouse.get_pos()
+                if pauseButton.collidepoint(pos):pauseUpdate = not pauseUpdate
 
-        print()
 
