@@ -36,6 +36,51 @@ def surroundingState(n, x, d=1):
 
     return value
 
+def updateScreen(Gameboard):
+    x = 0
+    # cell = Rect()
+
+    while x < boardSize:
+        y = 0
+        while y < boardSize:
+            cellColour = Gameboard[x][y]
+            if cellColour > 0:
+                cellColour = Dead
+            else:
+                cellColour = Live
+            pygame.draw.rect(screen, cellColour, (20 + x * 22, 20 + y * 22, 20, 20), border_radius=1)
+            y += 1
+        x += 1
+    pygame.display.update()
+
+    nextboard = np.zeros((boardSize, boardSize))
+
+    for i in range(len(Gameboard) - 1):
+        for j in range(len(Gameboard) - 1):
+            neighbours = np.sum(surroundingState((i, j), Gameboard))
+
+            # Birth rule
+            if neighbours == 3 and Gameboard[i, j] == 0:
+                nextboard[i, j] = 1
+
+            # Death by isolation
+            elif neighbours <= 2 and Gameboard[i, j] == 1:
+                nextboard[i, j] = 0
+
+            # Death by overcrowding
+            elif neighbours >= 5 and Gameboard[i, j] == 1:
+                nextboard[i, j] = 0
+
+            # Survival
+            elif (neighbours == 3 or neighbours == 4) and Gameboard[i, j] == 1:
+                nextboard[i, j] = 1
+
+    Gameboard = nextboard
+    return Gameboard
+    #  print(Gameboard)
+
+
+
 
 if __name__ == '__main__':
     # todo add click to add cell functionality
@@ -49,52 +94,16 @@ if __name__ == '__main__':
     screen.fill((0, 0, 0))
     x = 0
     # cell = Rect()
-
+    updateScreen(Gameboard)
+    lastFrameUpdate = time.time()
     running = true
     while running:
         start = time.time()
-        x = 0
-        # cell = Rect()
-
-        while x < boardSize:
-            y = 0
-            while y < boardSize:
-                cellColour = Gameboard[x][y]
-                if cellColour > 0:
-                    cellColour = Dead
-                else:
-                    cellColour = Live
-                pygame.draw.rect(screen, cellColour, (20 + x * 22, 20 + y * 22, 20, 20), border_radius=1)
-                y += 1
-            x += 1
-        pygame.display.update()
+        if time.time() - lastFrameUpdate >= 0.4:
+            Gameboard = updateScreen(Gameboard)
+            lastFrameUpdate = time.time()
         for event in pygame.event.get():
             if event.type == pygame.QUIT: running = false
 
-        nextboard = np.zeros((boardSize, boardSize))
-
-        for i in range(len(Gameboard) - 1):
-            for j in range(len(Gameboard) - 1):
-                neighbours = np.sum(surroundingState((i, j), Gameboard))
-
-                # Birth rule
-                if neighbours == 3 and Gameboard[i, j] == 0:
-                    nextboard[i, j] = 1
-
-                # Death by isolation
-                elif neighbours <= 2 and Gameboard[i, j] == 1:
-                    nextboard[i, j] = 0
-
-                # Death by overcrowding
-                elif neighbours >= 5 and Gameboard[i, j] == 1:
-                    nextboard[i, j] = 0
-
-                # Survival
-                elif (neighbours == 3 or neighbours == 4) and Gameboard[i, j] == 1:
-                    nextboard[i, j] = 1
-
-        Gameboard = nextboard
-        print(pygame.event.get())
-        #  print(Gameboard)
         print()
-        time.sleep(max(0.4 - (time.time() - start), 0))
+
